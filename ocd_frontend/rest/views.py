@@ -173,7 +173,7 @@ def format_search_results(results):
             'source_id': hit['_source']['meta']['source_id'],
             '_external': True
         }
-        hit['_source']['meta']['ocd_url'] = url_for('api.get_object', **kwargs)
+        hit['_source']['meta']['oad_url'] = url_for('api.get_object', **kwargs)
 
     return results
 

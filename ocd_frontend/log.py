@@ -6,7 +6,7 @@ from ocd_frontend.settings import LOGGING
 logging.config.dictConfig(LOGGING)
 
 def get_source_logger(name=None):
-    logger = logging.getLogger('ocd_frontend')
+    logger = logging.getLogger('oad_frontend')
 
     if name:
         formatter = logging.Formatter('[%(asctime)s] [%(name)s] [%(source)s] [%(module)s] [%(levelname)s] - %(message)s')

@@ -16,10 +16,10 @@ DEFAULT_SEARCH_SIZE = 10
 MAX_SEARCH_SIZE = 100
 
 # The name of the index containing documents from all sources
-COMBINED_INDEX = 'ocd_combined_index'
+COMBINED_INDEX = 'oad_combined_index'
 
-# The default prefix used for all ocd data
-DEFAULT_INDEX_PREFIX = 'ocd'
+# The default prefix used for all oad data
+DEFAULT_INDEX_PREFIX = 'oad'
 
 # The fields which can be used for sorting results via the REST API
 SORTABLE_FIELDS = (
@@ -84,12 +84,12 @@ AVAILABLE_FACETS = {
 ALLOWED_DATE_INTERVALS = ('day', 'week', 'month', 'quarter', 'year')
 
 # Name of the Elasticsearch index used to store URL resolve documnts
-RESOLVER_URL_INDEX = 'ocd_resolver'
+RESOLVER_URL_INDEX = 'oad_resolver'
 
 # Determines if API usage events should be logged
 USAGE_LOGGING_ENABLED = True
 # Name of the Elasticsearch index used to store logged events
-USAGE_LOGGING_INDEX = 'ocd_usage_logs'
+USAGE_LOGGING_INDEX = 'oad_usage_logs'
 
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 DUMPS_DIR = os.path.join(os.path.dirname(ROOT_PATH), 'dumps')
@@ -99,15 +99,15 @@ LOCAL_DUMPS_DIR = os.path.join(os.path.dirname(ROOT_PATH), 'local_dumps')
 # Should include API version and a trailing slash.
 # Can be overridden in the CLI when required, for instance when the user wants
 # to download dumps from another API instance than the one hosted by OpenState
-API_URL = 'http://api.opencultuurdata.nl/v0/'
+API_URL = 'http://api.openarchaeologydata.nl/v0/'
 
 # URL of the API documentation. This is used to redirect calls to the base
 # API_URL which would otherwise return a 404.
-DOCS_URL = 'http://docs.opencultuurdata.nl/'
+DOCS_URL = 'http://docs.openarchaeologydata.nl/'
 
 # URL where collection dumps are hosted. This is used for generating full URLs
 # to dumps in the /dumps endpoint
-DUMP_URL = 'http://dumps.opencultuurdata.nl/'
+DUMP_URL = 'http://dumps.openarchaeologydata.nl/'
 
 LOGGING = {
     'version': 1,
@@ -125,7 +125,7 @@ LOGGING = {
         },
     },
     'loggers': {
-        'ocd_frontend': {
+        'oad_frontend': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False,
