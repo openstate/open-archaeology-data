@@ -164,17 +164,17 @@ RUN git clone git://source.ffmpeg.org/ffmpeg.git \
     && ldconfig
 ##########
 
-WORKDIR /opt/ocd
+WORKDIR /opt/oad
 # Create a virtualenv project
 RUN echo 'ok'
 RUN virtualenv -q /opt
 RUN source ../bin/activate \
     && pip install pip --upgrade
-RUN echo "source /opt/bin/activate; cd /opt/ocd;" >> ~/.bashrc
+RUN echo "source /opt/bin/activate; cd /opt/oad;" >> ~/.bashrc
 
 # Temporarily add files on the host to the container
 # as it contains files needed to finish the base installation
-ADD . /opt/ocd
+ADD . /opt/oad
 
 # Install Python requirements
 RUN source ../bin/activate \
@@ -200,4 +200,4 @@ RUN find . -delete
 
 # When the container is created or started run start.sh which starts
 # all required services and supervisor which starts celery and celerycam
-CMD /opt/ocd/start.sh
+CMD /opt/oad/start.sh

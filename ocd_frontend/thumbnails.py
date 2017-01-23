@@ -32,7 +32,7 @@ def get_thumbnail_url(identifier, thumbnail_size='large'):
 
 
 def fetch_original(url, identifier):
-    with SpooledTemporaryFile(max_size=1024*1024, prefix='ocd_thumb_',
+    with SpooledTemporaryFile(max_size=1024*1024, prefix='oad_thumb_',
                               suffix='.tmp', dir=settings.THUMBNAILS_TEMP_DIR) as tempfile:
 
         log.debug('Fetching original ({})'.format(url))

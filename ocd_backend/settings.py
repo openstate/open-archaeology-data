@@ -43,7 +43,7 @@ LOGGING = {
         }
     },
     'loggers': {
-        'ocd_backend': {
+        'oad_backend': {
             'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': False,
@@ -63,16 +63,16 @@ TEMP_DIR_PATH = os.path.join(ROOT_PATH, 'temp')
 SOURCES_CONFIG_FILE = os.path.join(ROOT_PATH, 'sources.json')
 
 # The name of the index containing documents from all sources
-COMBINED_INDEX = 'ocd_combined_index'
+COMBINED_INDEX = 'oad_combined_index'
 
-# The default prefix used for all ocd data
-DEFAULT_INDEX_PREFIX = 'ocd'
+# The default prefix used for all oad data
+DEFAULT_INDEX_PREFIX = 'oad'
 
-RESOLVER_BASE_URL = 'http://api.opencultuurdata.nl/v0/resolve'
-RESOLVER_URL_INDEX = 'ocd_resolver'
+RESOLVER_BASE_URL = 'http://api.openarchaeologydata.nl/v0/resolve'
+RESOLVER_URL_INDEX = 'oad_resolver'
 
 # The User-Agent that is used when retrieving data from external sources
-USER_AGENT = 'OpenCultuurData/0.1 (+http://www.opencultuurdata.nl/)'
+USER_AGENT = 'OpenArchaeologyData/0.1 (+http://www.openarchaeologydata.nl/)'
 
 # Allow any settings to be defined in local_settings.py which should be
 # ignored in your version control system allowing for settings to be

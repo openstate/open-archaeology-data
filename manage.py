@@ -252,22 +252,22 @@ def qa_matrix(index, sources_config):
         print ("{:<24}" * (len(fields) + 2)).format(*([source_id, counts['all']] + [counts.get(c, 0) for c in sorted(fields)]))
 
 @command('put_template')
-@click.option('--template_file', default='es_mappings/ocd_template.json',
+@click.option('--template_file', default='es_mappings/oad_template.json',
               type=click.File('rb'), help='Path to JSON file containing the template.')
 def es_put_template(template_file):
     """
     Put a template into Elasticsearch. A template contains settings and mappings
-    that should be applied to multiple indices. Check ``es_mappings/ocd_template.json``
+    that should be applied to multiple indices. Check ``es_mappings/oad_template.json``
     for an example.
 
-    :param template_file: Path to JSON file containing the template. Defaults to ``es_mappings/ocd_template.json``.
+    :param template_file: Path to JSON file containing the template. Defaults to ``es_mappings/oad_template.json``.
     """
     click.echo('Putting ES template: %s' % template_file.name)
 
     template = json.load(template_file)
     template_file.close()
 
-    es.indices.put_template('ocd_template', template)
+    es.indices.put_template('oad_template', template)
 
 
 @command('put_mapping')
@@ -296,12 +296,12 @@ def create_indexes(mapping_dir):
     Create all indexes for which a mapping- and settings file is available.
 
     It is assumed that mappings in the specified directory follow the
-    following naming convention: "ocd_mapping_{SOURCE_NAME}.json".
+    following naming convention: "oad_mapping_{SOURCE_NAME}.json".
     For example: "ocd_mapping_rijksmuseum.json".
     """
     click.echo('Creating indexes for ES mappings in %s' % (mapping_dir))
 
-    for mapping_file_path in glob('%s/ocd_mapping_*.json' % mapping_dir):
+    for mapping_file_path in glob('%s/oad_mapping_*.json' % mapping_dir):
         # Extract the index name from the filename
         index_name = DEFAULT_INDEX_PREFIX
         mapping_file = os.path.split(mapping_file_path)[-1].split('.')[0]
@@ -344,7 +344,7 @@ def delete_indexes(delete_template):
         es.indices.delete(index=index_glob)
 
     if delete_template or click.confirm('Do you want to delete the template too?'):
-        es.indices.delete_template('ocd_template')
+        es.indices.delete_template('oad_template')
 
 
 @command('available_indices')
@@ -623,7 +623,7 @@ def load_dump(collection_dump, collection_name):
     Restore an index from a dump file.
 
     :param collection_dump: Path to a local gzipped dump to load.
-    :param collection_name: Name for the local index to restore the dump to. Optional; will be derived from the dump name, at your own risk. Note that the pipeline will add a "ocd_" prefix string to the collection name, to ensure the proper mapping and settings are applied.
+    :param collection_name: Name for the local index to restore the dump to. Optional; will be derived from the dump name, at your own risk. Note that the pipeline will add a "oad_" prefix string to the collection name, to ensure the proper mapping and settings are applied.
     """
     available_dumps = glob(os.path.join(LOCAL_DUMPS_DIR, '*/*.gz'))
     if not collection_dump:
@@ -639,7 +639,7 @@ def load_dump(collection_dump, collection_name):
     collection_id = '_'.join(collection.split('/')[-1].split('.')[0].split('_')[:2])
 
     if not collection_name:
-        collection_name = collection_id.replace('ocd_', '')
+        collection_name = collection_id.replace('oad_', '')
 
     source_definition = {
         'id': collection_id,
