@@ -12,7 +12,7 @@
         "oai_metadata_prefix": "oai_pnh",
         "index_name": "pnh",
         "translate": {
-            "key": "AIzaSyBIpfDKZQeCEVtdErJS3XWGLVtXp98_8Rg",
+            "key": "",
             "source": "nl",
             "target": "en",
             "use_cache": true,
@@ -32,7 +32,7 @@
         "oai_metadata_prefix": "studie",
         "index_name": "pzh",
         "translate": {
-            "key": "AIzaSyBIpfDKZQeCEVtdErJS3XWGLVtXp98_8Rg",
+            "key": "",
             "source": "nl",
             "target": "en",
             "use_cache": true,
