@@ -1,20 +1,64 @@
 from datetime import datetime
 from ocd_backend.items import BaseItem
+from tinydb import TinyDB, Query
+import requests
 
 class PnhItem(BaseItem):
-    
+
     cache_str = '&cache=yes'
-    
+
     namespaces = {
         'oai': 'http://www.openarchives.org/OAI/2.0/',
         'dc': 'http://purl.org/dc/elements/1.1/',
         'dcterms' : 'http://purl.org/dc/terms/'
     }
-        
+
     media_mime_types = {
         'png': 'image/png',
         'jpg': 'image/jpeg'
     }
+
+    override_db = TinyDB('translation-override-db.json')
+    cache_db = TinyDB('translation-cache-db.json')
+    q = Query()
+
+    session = requests.session()
+    translate_url = 'https://translation.googleapis.com/language/translate/v2'
+
+    def _translate(self, text):
+        # Skip translation if not requested
+        if not 'translate' in self.source_definition:
+            return text
+
+        # Use override translation if requested and available
+        if 'use_override' in self.source_definition['translate'] and self.source_definition['translate']['use_override'] == True:
+            override = self.override_db.search((self.q.source == self.source_definition['translate']['source']) & (self.q.target == self.source_definition['translate']['target']) & (self.q.source_text == text))
+            if override:
+                return unicode(override[0]['target_text'])
+
+        # Use cached translation if requested and available
+        if 'use_cache' in self.source_definition['translate'] and self.source_definition['translate']['use_cache'] == True:
+            cache = self.cache_db.search((self.q.source == self.source_definition['translate']['source']) & (self.q.target == self.source_definition['translate']['target']) & (self.q.source_text == text))
+            if cache:
+                return unicode(cache[0]['target_text'])
+
+        # Else, fetch a new translation for the text and save it in the cache database
+        params = {
+            'key': self.source_definition['translate']['key'],
+            'source': self.source_definition['translate']['source'],
+            'target': self.source_definition['translate']['target'],
+            'q': text
+        }
+        target_text = unicode(self.session.get(self.translate_url, params=params).json()['data']['translations'][0]['translatedText'])
+        if 'use_cache' in self.source_definition['translate'] and self.source_definition['translate']['use_cache'] == True:
+            self.cache_db.insert({
+                'source': self.source_definition['translate']['source'],
+                'target': self.source_definition['translate']['target'],
+                'source_text': text,
+                'target_text': target_text
+
+            })
+        return unicode(target_text)
 
     def _get_text_or_none(self, xpath_expression):
         node = self.original_item.find(xpath_expression, namespaces=self.namespaces)
@@ -25,20 +69,20 @@ class PnhItem(BaseItem):
 
     def get_original_object_id(self):
         return self._get_text_or_none('.//oai:header/oai:identifier').strip()
-    
+
     def get_original_object_urls(self):
         original_id = self.get_original_object_id()
         return {
             'html': self._get_text_or_none('.//oai:metadata/oai:deeplinkpubl'),
             'xml': '%s?verb=GetRecord&identifier=%s&metadataPrefix=%s' % (self.source_definition['oai_base_url'], original_id, self.source_definition['oai_metadata_prefix'])
         }
-       
+
     def get_rights(self):
         rights = self._get_text_or_none('.//oai:metadata/oai:dc_rights')
         if rights:
             return rights
-        return u'Licentie PNH ontbreekt' 
-        
+        return u'Licentie PNH ontbreekt'
+
     def get_collection(self):
         dc_type = self._get_text_or_none('.//oai:metadata/oai:dc_type')
         if dc_type:
@@ -48,44 +92,44 @@ class PnhItem(BaseItem):
     def _get_clean_link(self, text):
         if text.endswith(self.cache_str):
             return text.replace(self.cache_str, '')
-        else: 
+        else:
             return text
-    
-    def _get_clean_date(self, date):         
+
+    def _get_clean_date(self, date):
         date = date.replace('-', ' ')
         date_arr = date.split(' ')
         for ele in date_arr:
             try:
                 cdate = int(ele)
             except:
-                continue            
+                continue
             cgran = 6
             return cdate, cgran
-        
+
         return None , None
-    
+
     def get_combined_index_data(self):
         combined_index_data = {}
-        
+
         title = self._get_text_or_none('.//oai:title')
-        combined_index_data['title'] = title
+        combined_index_data['title'] = self._translate(title)
 
         description = self._get_text_or_none('.//dc:description[@language="DUT"]')
         if description:
-            combined_index_data['description'] = description
+            combined_index_data['description'] = self._translate(description)
 
         date = self._get_text_or_none('.//dcterms:temporal')
-        
+
         if date:
             cdate , cgran = self._get_clean_date(date)
             if cdate and cgran:
                 combined_index_data['date'] = datetime(cdate, 1, 1)
                 combined_index_data['date_granularity'] = cgran
-                   
+
         # No authors for archaeology
         combined_index_data['authors'] = []
 
-        # Media 
+        # Media
         mediums = self.original_item.findall(
             './/oai:europeana_isshownby',
             namespaces=self.namespaces
@@ -97,7 +141,7 @@ class PnhItem(BaseItem):
             for medium in mediums:
                 combined_index_data['media_urls'].append({
                     'original_url': medium.text.strip(),
-                    'content_type': 
+                    'content_type':
                         self.media_mime_types[
                             self._get_clean_link(
                                 medium.text.strip()
@@ -109,7 +153,7 @@ class PnhItem(BaseItem):
 
     def get_index_data(self):
         return {}
-   
+
     def get_all_text(self):
         text_items = []
 
@@ -118,7 +162,7 @@ class PnhItem(BaseItem):
 
         # Alternative title
         text_items.append(self._get_text_or_none('.//dc:title'))
-        
+
         # Creators
         creators = self.original_item.findall('.//oai:dc_creator',
                                               namespaces=self.namespaces)
@@ -127,7 +171,7 @@ class PnhItem(BaseItem):
 
         # Subject
         text_items.append(self._get_text_or_none('.//dc:subject'))
-       
+
         # Description
         text_items.append(self._get_text_or_none('.//dc:description[@language="DUT"]'))
 
@@ -139,15 +183,15 @@ class PnhItem(BaseItem):
 
         # Spatial
         text_items.append(self._get_text_or_none('.//oai:vindplaats'))
-        
+
         text_items.append(self._get_text_or_none('.//oai:objecttype'))
-        
+
         text_items.append(self._get_text_or_none('.//oai:europeana_country'))
-        
+
         text_items.append(self._get_text_or_none('.//oai:archisnummer'))
 
         text_items.append(self._get_text_or_none('.//oai:tentoonstellingsgeschiedenis'))
-        
+
         items = self.original_item.findall('.//oai:thesperiode',
                                               namespaces=self.namespaces)
         for item in items:
