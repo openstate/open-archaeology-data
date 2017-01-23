@@ -1,6 +1,6 @@
 version: '2'
 services:
-  c-ocd-nginx:
+  c-oad-nginx:
     build:
       context: .
       dockerfile: Dockerfile-nginx
@@ -12,18 +12,18 @@ services:
     restart: always
     networks:
       - nginx-load-balancer
-      - ocd
-  c-ocd-app:
+      - oad
+  c-oad-app:
     build:
       context: ..
       dockerfile: Dockerfile
     volumes:
-      - ..:/opt/ocd
+      - ..:/opt/oad
     restart: always
     networks:
-      - ocd
+      - oad
 networks:
-  ocd:
+  oad:
   nginx-load-balancer:
     external:
       name: docker_nginx-load-balancer
