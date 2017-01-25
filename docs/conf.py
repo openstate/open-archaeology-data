@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Open Cultuur Data API documentation build configuration file, created by
+# Open Archaeology Data API documentation build configuration file, created by
 # sphinx-quickstart
 
 import sys
@@ -30,8 +30,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Open Cultuur Data API'
-copyright = u'2014, Bart de Goede and Justin van Wees; documentation is released under Creative Commons Attribution 4.0'
+project = u'Open Archaeology Data API'
+copyright = u'2017 Open State Foundation; documentation is released under Creative Commons Attribution 4.0'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -81,7 +81,8 @@ pygments_style = 'sphinx'
 
 
 extlinks = {
-    'rest_api_v0': ('http://api.opencultuurdata.nl/%s', None)
+    'rest_api_en_v0': ('http://api-en.archaeologydata.com/%s', None),
+    'rest_api_nl_v0': ('http://api-nl.archaeologydata.com/%s', None)
 }
 
 # -- Options for HTML output ----------------------------------------------
@@ -158,7 +159,7 @@ html_show_sphinx = False
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'OpenCultuurDataAPIdoc'
+htmlhelp_basename = 'OpenArchaeologyDataAPIdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -178,8 +179,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'OpenCultuurDataAPI.tex', u'Open Cultuur Data API Documentation',
-   u'Justin van Wees', 'manual'),
+  ('index', 'OpenArchaeologyDataAPI.tex', u'Open Archaeology Data API Documentation',
+   u'Open State Foundation', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -208,8 +209,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'opencultuurdataapi', u'Open Cultuur Data API Documentation',
-     [u'Justin van Wees'], 1)
+    ('index', 'openarchaeologydataapi', u'Open Archaeology Data API Documentation',
+     [u'Open State Foundation'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -222,8 +223,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'OpenCultuurDataAPI', u'Open Cultuur Data API Documentation',
-   u'Justin van Wees', 'OpenCultuurDataAPI', 'One line description of project.',
+  ('index', 'OpenArchaeologyDataAPI', u'Open Archaeology Data API Documentation',
+   u'Open State Foundation', 'OpenArchaeologyDataAPI', 'One line description of project.',
    'Miscellaneous'),
 ]
 

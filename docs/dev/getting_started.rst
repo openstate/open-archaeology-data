@@ -1,7 +1,7 @@
 .. _dev_getting_started:
 
-Contributing to the Open Cultuur Data API
-=========================================
+Contributing to the Open Archaeology Data API
+=============================================
 
 .. todo::
    
@@ -9,14 +9,14 @@ Contributing to the Open Cultuur Data API
 
    - Setting up the environment
 
-Want to get involved with the Open Cultuur Data API? Here's how you can help!
+Want to get involved with the Open Archaeology Data API? Here's how you can help!
 
 Please take a moment to review this document in order to make the contribution process easy and effective for everyone involved.
 
 Using the issue tracker
 -----------------------
 
-The `issue tracker <https://github.com/openstate/open-cultuur-data/issues>`_ is the preferred channel for submitting bug reports, feature requests and pull requests.
+The `issue tracker <https://github.com/openstate/open-archaeology-data/issues>`_ is the preferred channel for submitting bug reports, feature requests and pull requests.
 
 Bug reports
 -----------
@@ -26,14 +26,13 @@ Spot an error in the way data is formatted? Getting unexpected error when making
 Some guidelines when submitting a bug report:
 
 - Check if the issue hasn't already been reported.
-- Be as detailed as possible, people reading the report shouldn't have to chase you up for more information.   Describe the problem thoroughly, so others can try to reproduce it.
-- Verify that the problem only occurs within the Open Cultuur Data API, and not in the original source. You can do this by requesting the original document(s) via the REST API (``/(source_id)/(object_id)/source``). Problems in the source data will not be fixed by us and should be reported to the data publishers.
+- Be as detailed as possible, people reading the report shouldn't have to chase you up for more information. Describe the problem thoroughly, so others can try to reproduce it.
+- Verify that the problem only occurs within the Open Archaeology Data API, and not in the original source. You can do this by requesting the original document(s) via the REST API (``/(source_id)/(object_id)/source``). Problems in the source data will not be fixed by us and should be reported to the data publishers.
 
 Feature requests
 ----------------
 
 Feature requests are welcome, but take a moment to find out whether your idea fits the scope and goals of the project. It's up to you to make a strong case to convince others of the merits of feature your are requesting. Please provide as much detail and context as possible.
-
 
 Pull requests
 -------------
@@ -48,9 +47,9 @@ To submit a pull request, follow this process:
 
 1. `Fork the project <http://help.github.com/fork-a-repo/>`_ and clone your fork::
 
-   $ git clone https://github.com/<your-username>/open-cultuur-data.git
-   $ cd open-cultuur-data
-   $ git remote add upstream https://github.com/openstate/open-cultuur-data.git
+   $ git clone https://github.com/<your-username>/open-archaeology-data.git
+   $ cd open-archaeology-data
+   $ git remote add upstream https://github.com/openstate/open-archaeology-data.git
 
 2. Always make sure you are working with a recent version. To get the latest changes from upstream::
 

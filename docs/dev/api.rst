@@ -61,7 +61,7 @@ Loading items
 Command Line Interface
 ----------------------
 
-The OpenCultuurData source code provides a Command Line Interface (CLI) for managing your instance. The CLI is largely self-documented (run ``./manage.py [<COMMAND>] --help`` for further assistance).
+The Open Archaeology Data source code provides a Command Line Interface (CLI) for managing your instance. The CLI is largely self-documented (run ``./manage.py [<COMMAND>] --help`` for further assistance).
 
 .. automodule:: manage
 

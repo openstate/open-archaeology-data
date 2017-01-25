@@ -12,11 +12,12 @@ General notes
 
 The API accepts requests with JSON content and returns JSON data in all of its responses (unless stated otherwise). Standard HTTP response codes are used to indicate errors. In case of an error, a more detailed description can be found in the JSON response body. UTF-8 character encoding is used in both requests and responses.
 
-All API URLs referenced in this documentation start with the following base part:
+All API URLs referenced in this documentation start with the either of the following base parts, depending on if you want the original Dutch or translated English data (translated using Google Translate):
 
-    :rest_api_v0:`v0`
+- :rest_api_nl_v0:`v0`
+- :rest_api_en_v0:`v0`
 
-All API endpoints are designed according to the idea that there is an operation within a *context*: methods on the "root" context are executed across all datasets; :ref:`/search <rest_search>` executes a search across all collections, whereas :ref:`/openbeelden/search <rest_source_search>` executes a search on the OpenBeelden collection.
+All API endpoints are designed according to the idea that there is an operation within a *context*: methods on the "root" context are executed across all datasets; :ref:`/search <rest_search>` executes a search across all collections, whereas :ref:`/pnh/search <rest_source_search>` executes a search on the Provincie Noord-Holland collection.
 
 Arguments to an endpoint are placed behind the method definition, or supplied as JSON in a POST request. For instance, the :ref:`similar objects endpoint <rest_similar>` can be executed within the context of a collection, and needs an ``object_id`` to execute on.
 
@@ -31,30 +32,33 @@ Collection overview and statistics
 
    .. sourcecode:: http
 
-      $ curl -i -XGET 'http://api.opencultuurdata.nl/v0/sources'
+      $ curl -i -XGET 'http://api-en.archaeologydata.com/v0/sources'
 
    **Example response**
 
-    .. sourcecode:: http
+   .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
+      Server: nginx/1.11.5
+      Date: Wed, 25 Jan 2017 08:29:36 GMT
       Content-Type: application/json
-      Content-Length: 1885
-      Date: Mon, 19 May 2014 12:58:43 GMT
+      Content-Length: 207
+      Connection: keep-alive
+      Access-Control-Allow-Origin: *
 
       {
-         "sources": [
-             {
-                "count": 562,
-                "id": "zoutkamp",
-                "name": "Visserijmuseum Zoutkamp"
-             },
-             {
-                "count": 207,
-                "id": "textielmuseum",
-                "name": "TextielMuseum"
-             }
-         ]
+        "sources": [
+          {
+            "count": 18585,
+            "id": "pzh",
+            "name": "Collectienaam PZH ontbreekt"
+          },
+          {
+            "count": 10799,
+            "id": "pnh",
+            "name": "NH Collectie"
+          }
+        ]
       }
 
    :statuscode 200: OK, no errors.
@@ -72,8 +76,8 @@ Searching within multiple collections
 
    .. sourcecode:: http
 
-      $ curl -i -XPOST 'http://api.opencultuurdata.nl/v0/search' -d '{
-         "query": "journaal",
+      $ curl -i -XPOST 'http://api-en.archaeologydata.com/v0/search' -d '{
+         "query": "glass",
          "facets": {
             "collection": {},
             "date": {"interval": "day"}
@@ -84,14 +88,18 @@ Searching within multiple collections
          "size": 1
       }'
 
-   **Example response**
+   **Example response** (limited facets to 6 results for readability)
 
-    .. sourcecode:: http
+   .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
+      Server: nginx/1.11.5
+      Date: Wed, 25 Jan 2017 08:30:56 GMT
       Content-Type: application/json
-      Content-Length: 1885
-      Date: Mon, 19 May 2014 12:58:43 GMT
+      Content-Length: 6630
+      Connection: keep-alive
+      Vary: Accept-Encoding
+      Access-Control-Allow-Origin: *
 
       {
         "facets": {
@@ -101,94 +109,43 @@ Searching within multiple collections
             "other": 0,
             "terms": [
               {
-                "count": 13,
-                "term": "Open Beelden"
+                "count": 364,
+                "term": "NH Collectie"
               },
               {
-                "count": 7,
-                "term": "Rijksmuseum"
+                "count": 127,
+                "term": "Collectienaam PZH ontbreekt"
               }
             ],
-            "total": 20
+            "total": 491
           },
           "date": {
             "_type": "date_histogram",
             "entries": [
               {
-                "count": 1,
-                "time": -12307248000000
-              },
-              {
-                "count": 1,
-                "time": -11770704000000
+                "count": 4,
+                "time": -60904915200000
               },
               {
                 "count": 2,
-                "time": -11644473600000
+                "time": -60589296000000
+              },
+              {
+                "count": 3,
+                "time": -59958144000000
+              },
+			  ...
+              {
+                "count": 1,
+                "time": -2240524800000
+              },
+              {
+                "count": 4,
+                "time": -2208988800000
               },
               {
                 "count": 1,
-                "time": -11612937600000
-              },
-              {
-                "count": 1,
-                "time": -11581401600000
-              },
-              {
-                "count": 1,
-                "time": -11549865600000
-              },
-              {
-                "count": 1,
-                "time": -652579200000
-              },
-              {
-                "count": 1,
-                "time": -573350400000
-              },
-              {
-                "count": 1,
-                "time": -552355200000
-              },
-              {
-                "count": 1,
-                "time": -541728000000
-              },
-              {
-                "count": 1,
-                "time": -509414400000
-              },
-              {
-                "count": 1,
-                "time": -491184000000
-              },
-              {
-                "count": 1,
-                "time": -434332800000
-              },
-              {
-                "count": 1,
-                "time": -279244800000
-              },
-              {
-                "count": 1,
-                "time": -266198400000
-              },
-              {
-                "count": 1,
-                "time": -259632000000
-              },
-              {
-                "count": 1,
-                "time": -239846400000
-              },
-              {
-                "count": 1,
-                "time": -239328000000
-              },
-              {
-                "count": 1,
-                "time": 1300233600000
+                "time": -1262304000000
               }
             ]
           }
@@ -196,80 +153,56 @@ Searching within multiple collections
         "hits": {
           "hits": [
             {
-              "_id": "4558763df1b233a57f0176839dc572e9e8726a02",
-              "_score": 0.5564619,
+              "_id": "6a69f592b04f6d1b75ff97f6b824359711ad1b5f",
+              "_score": 2.6290884,
               "_source": {
-                "authors": [
-                  "Polygoon-Profilti (producent) / Nederlands Instituut voor Beeld en Geluid (beheerder)"
-                ],
-                "date": "1952-07-01T00:00:00",
-                "date_granularity": 8,
-                "description": "In dit journaal wordt verslag gedaan van de manier waarop een wedstrijdvlucht met postduiven wordt uitgevoerd. Met beelden van duivenhouders, duiventillen, het verenigingsgebouw en het lossen en de thuiskomst van de duiven.",
+                "description": "Glass; blue; millefiori glass; fragment",
+                "enrichments": {
+                  "media_urls": [
+                    {
+                      "content_type": "image/jpeg",
+                      "image_format": "JPEG",
+                      "image_mode": "RGB",
+                      "media_type": "image",
+                      "original_url": "http://collectie.huisvanhilde.nl/cc/imageproxy.aspx?server=10.0.10.211&port=17502&filename=images62/Velsen/Westerwijk_1966/Objecten/10291-11(1).jpg&cache=yes",
+                      "resolution": {
+                        "height": 3110,
+                        "total_pixels": 9690760,
+                        "width": 3116
+                      },
+                      "size_in_bytes": 880955,
+                      "url": "http://api-en.archaeologydata.com/v0/resolve/273014d0f2d9e79a9ac8b12598830918c46c1e2f"
+                    }
+                  ]
+                },
                 "media_urls": [
                   {
-                    "content_type": "video/webm",
-                    "url": "http://api.opencultuurdata.nl/v0/resolve/53812149df7cd251530b19fbe41d2f1279ff41e4"
-                  },
-                  {
-                    "content_type": "video/ogg",
-                    "url": "http://api.opencultuurdata.nl/v0/resolve/5f2fec5142bdf8ac5618ca24c1024a6c8885aaef"
-                  },
-                  {
-                    "content_type": "video/ogg",
-                    "url": "http://api.opencultuurdata.nl/v0/resolve/862d18ac74e8deca6d4fb5dafe9e8f59551fec22"
-                  },
-                  {
-                    "content_type": "video/mp4",
-                    "url": "http://api.opencultuurdata.nl/v0/resolve/41bc80ef056c83272e2cd888d1ad6cf2a7f1939c"
-                  },
-                  {
-                    "content_type": "video/mp4",
-                    "url": "http://api.opencultuurdata.nl/v0/resolve/13b967ddb0415a70627c460de3a5bd4a6864b23d"
-                  },
-                  {
-                    "content_type": "application/x-mpegurl",
-                    "url": "http://api.opencultuurdata.nl/v0/resolve/736c4b8f5aa75af3dfe82d4e6c3cfa3ef7f00978"
-                  },
-                  {
-                    "content_type": "video/mp2t",
-                    "url": "http://api.opencultuurdata.nl/v0/resolve/110756a6f502797c2596f7e2b1cd751770bb7644"
-                  },
-                  {
-                    "content_type": "video/mpeg",
-                    "url": "http://api.opencultuurdata.nl/v0/resolve/f5fe55c4485a53dc5d04db7e3bd61121d3bad81e"
-                  },
-                  {
-                    "content_type": "video/mpeg",
-                    "url": "http://api.opencultuurdata.nl/v0/resolve/b33ac5a6ef77af37d347f069d502e6238b9e3c15"
-                  },
-                  {
-                    "content_type": "image/png",
-                    "url": "http://api.opencultuurdata.nl/v0/resolve/7fead9d2bd1d1ec09f19e45ff32b2ca9cee2cfe6"
+                    "content_type": "image/jpeg",
+                    "url": "http://api-en.archaeologydata.com/v0/resolve/273014d0f2d9e79a9ac8b12598830918c46c1e2f"
                   }
                 ],
                 "meta": {
-                  "collection": "Open Beelden",
-                  "ocd_url": "http://api.opencultuurdata.nl/openbeelden/4558763df1b233a57f0176839dc572e9e8726a02",
-                  "original_object_id": "oai:openimages.eu:654062",
+                  "collection": "NH Collectie",
+                  "oad_url": "http://c-oad-app-en:5000/v0/pnh/6a69f592b04f6d1b75ff97f6b824359711ad1b5f",
+                  "original_object_id": "10291-11",
                   "original_object_urls": {
-                    "html": "http://openbeelden.nl/media/654062/",
-                    "xml": "http://openbeelden.nl/feeds/oai/?verb=GetRecord&identifier=oai:openimages.eu:654062&metadataPrefix=oai_oi"
+                    "html": "http://collectie.huisvanhilde.nl/?query=Records/relatedid=[Object56134]&label=Zoekopdracht&showtype=record",
+                    "xml": "http://62.221.199.184:17518/oai?verb=GetRecord&identifier=10291-11&metadataPrefix=oai_pnh"
                   },
-                  "processing_finished": "2014-05-24T13:47:46.910313",
-                  "processing_started": "2014-05-24T13:47:46.905950",
-                  "rights": "Creative Commons Attribution-ShareAlike",
-                  "source_id": "openbeelden"
+                  "processing_finished": "2017-01-25T02:47:17.737953",
+                  "processing_started": "2017-01-25T00:06:13.099970",
+                  "rights": "Naamsvermelding-NietCommercieel-GeenAfgeleideWerken 3.0 Nederland (CC BY-NC-ND 3.0) \nhttp://creativecommons.org/licenses/by-nc-nd/3.0/nl/",
+                  "source_id": "pnh"
                 },
-                "title": "Postduivenvluchten in Nederland"
+                "title": "Glass"
               }
             }
           ],
-          "max_score": 0.5564619,
-          "total": 20
+          "max_score": 2.6290884,
+          "total": 491
         },
-        "took": 58
+        "took": 15
       }
-
 
    **Query**
 
@@ -294,8 +227,7 @@ Searching within multiple collections
    .. sourcecode:: javascript
 
       {
-         "media_content_type": {"count": 100},
-         "author": {"count": 5}
+         "media_content_type": {"count": 100}
       }
 
    For a date based facet the 'bucket size' of the histogram can be specified:
@@ -312,16 +244,13 @@ Searching within multiple collections
 
    Results can be filtered on one or more properties. Each key of the ``filters`` object represents a filter, the values should be objects. When filtering on multiple fields only documents that match all filters are included in the result set. The names of the filters match those of the facets.
 
-   For example, to retrieve documents that have media associated with them of the type ``image/jpeg`` **or** ``image/png`` **and** a  ``Rembrandt Harmensz. van Rijn`` as one of the authors:
+   For example, to retrieve documents that have media associated with them of the type ``image/jpeg`` **or** ``image/png``:
 
    .. sourcecode:: javascript
 
       {
          "media_content_type": {
             "terms": ['image/jpeg', 'image/png']
-         },
-         "author": {
-            "terms": ["Rembrandt Harmensz. van Rijn"]
          }
       }
 
@@ -349,7 +278,6 @@ Searching within multiple collections
 
 Searching within a single collection
 ------------------------------------
-
 
 .. http:post:: /(source_id)/search
 
@@ -380,90 +308,70 @@ Retrieving a single object
 
    .. sourcecode:: http
 
-      $ curl -i 'http://api.opencultuurdata.nl/v0/openbeelden/4558763df1b233a57f0176839dc572e9e8726a02'
+      $ curl -i 'http://api-en.archaeologydata.com/v0/pnh/701287f9d6d4bf1727e3569b5aebb8d65ce13163'
 
    **Example response**
 
    .. sourcecode:: http
 
-      HTTP/1.0 200 OK
+      HTTP/1.1 200 OK
+      Server: nginx/1.11.5
+      Date: Wed, 25 Jan 2017 10:53:13 GMT
       Content-Type: application/json
-      Content-Length: 2419
-      Server: Werkzeug/0.9.4 Python/2.7.3
-      Date: Sat, 24 May 2014 14:56:32 GMT
+      Content-Length: 1709
+      Connection: keep-alive
+      Vary: Accept-Encoding
+      Access-Control-Allow-Origin: *
 
       {
-        "authors": [
-          "Polygoon-Profilti (producent) / Nederlands Instituut voor Beeld en Geluid (beheerder)"
-        ],
-        "date": "1952-07-01T00:00:00",
-        "date_granularity": 8,
-        "description": "In dit journaal wordt verslag gedaan van de manier waarop een wedstrijdvlucht met postduiven wordt uitgevoerd. Met beelden van duivenhouders, duiventillen, het verenigingsgebouw en het lossen en de thuiskomst van de duiven.",
+        "date": "1400-01-01T00:00:00",
+        "date_granularity": 6,
+        "description": "Dagger; fe-dollar-; Quillon dagger; triangular, narrowed angel and wooden opschuifheft.",
+        "enrichments": {
+          "media_urls": [
+            {
+              "content_type": "image/jpeg",
+              "image_format": "JPEG",
+              "image_mode": "RGB",
+              "media_type": "image",
+              "original_url": "http://collectie.huisvanhilde.nl/cc/imageproxy.aspx?server=10.0.10.211&port=17502&filename=images59/Bergen/Egmond/Egmond aan den Hoef/Kasteel/doosnummers-objecten-ladenkast metaal/5002-081.jpg&cache=yes",
+              "resolution": {
+                "height": 600,
+                "total_pixels": 360000,
+                "width": 600
+              },
+              "size_in_bytes": 17574,
+              "url": "http://api-en.archaeologydata.com/v0/resolve/9807ddf0789c15e71fe259df46e4e3801c0a12c5"
+            }
+          ]
+        },
         "media_urls": [
           {
-            "content_type": "video/webm",
-            "url": "http://api.opencultuurdata.nl/v0/resolve/53812149df7cd251530b19fbe41d2f1279ff41e4"
-          },
-          {
-            "content_type": "video/ogg",
-            "url": "http://api.opencultuurdata.nl/v0/resolve/5f2fec5142bdf8ac5618ca24c1024a6c8885aaef"
-          },
-          {
-            "content_type": "video/ogg",
-            "url": "http://api.opencultuurdata.nl/v0/resolve/862d18ac74e8deca6d4fb5dafe9e8f59551fec22"
-          },
-          {
-            "content_type": "video/mp4",
-            "url": "http://api.opencultuurdata.nl/v0/resolve/41bc80ef056c83272e2cd888d1ad6cf2a7f1939c"
-          },
-          {
-            "content_type": "video/mp4",
-            "url": "http://api.opencultuurdata.nl/v0/resolve/13b967ddb0415a70627c460de3a5bd4a6864b23d"
-          },
-          {
-            "content_type": "application/x-mpegurl",
-            "url": "http://api.opencultuurdata.nl/v0/resolve/736c4b8f5aa75af3dfe82d4e6c3cfa3ef7f00978"
-          },
-          {
-            "content_type": "video/mp2t",
-            "url": "http://api.opencultuurdata.nl/v0/resolve/110756a6f502797c2596f7e2b1cd751770bb7644"
-          },
-          {
-            "content_type": "video/mpeg",
-            "url": "http://api.opencultuurdata.nl/v0/resolve/f5fe55c4485a53dc5d04db7e3bd61121d3bad81e"
-          },
-          {
-            "content_type": "video/mpeg",
-            "url": "http://api.opencultuurdata.nl/v0/resolve/b33ac5a6ef77af37d347f069d502e6238b9e3c15"
-          },
-          {
-            "content_type": "image/png",
-            "url": "http://api.opencultuurdata.nl/v0/resolve/7fead9d2bd1d1ec09f19e45ff32b2ca9cee2cfe6"
+            "content_type": "image/jpeg",
+            "url": "http://api-en.archaeologydata.com/v0/resolve/9807ddf0789c15e71fe259df46e4e3801c0a12c5"
           }
         ],
         "meta": {
-          "collection": "Open Beelden",
-          "ocd_url": "http://api.opencultuurdata.nl/openbeelden/4558763df1b233a57f0176839dc572e9e8726a02",
-          "original_object_id": "oai:openimages.eu:654062",
+          "collection": "NH Collectie",
+          "original_object_id": "5002-081",
           "original_object_urls": {
-            "html": "http://openbeelden.nl/media/654062/",
-            "xml": "http://openbeelden.nl/feeds/oai/?verb=GetRecord&identifier=oai:openimages.eu:654062&metadataPrefix=oai_oi"
+            "html": "http://collectie.huisvanhilde.nl/?query=Records/relatedid=[Object38791]&label=Zoekopdracht&showtype=record",
+            "xml": "http://62.221.199.184:17518/oai?verb=GetRecord&identifier=5002-081&metadataPrefix=oai_pnh"
           },
-          "processing_finished": "2014-05-24T13:47:46.910313",
-          "processing_started": "2014-05-24T13:47:46.905950",
-          "rights": "Creative Commons Attribution-ShareAlike",
-          "source_id": "openbeelden"
+          "processing_finished": "2017-01-25T02:47:23.384497",
+          "processing_started": "2017-01-25T00:33:41.614905",
+          "rights": "Naamsvermelding-NietCommercieel-GeenAfgeleideWerken 3.0 Nederland (CC BY-NC-ND 3.0) \nhttp://creativecommons.org/licenses/by-nc-nd/3.0/nl/",
+          "source_id": "pnh"
         },
-        "title": "Postduivenvluchten in Nederland"
+        "title": "Dagger"
       }
 
    :statuscode 200: OK, no errors.
    :statuscode 404: The source and/or object does not exist.
 
-
 .. http:get:: /(source_id)/(object_id)/source
 
-   Retrieves the object's data in its original and unmodified form, as used as input for the Open Cultuur Data extractor(s). Being able to retrieve the object in it's original form can be useful for debugging purposes (i.e. when fields are missing or odd values are returned in the OCD representation of the object).
+   Retrieves the object's data in its original and unmodified form, as used as input for the Open Archaeology Data extractor(s). Being able to retrieve the object in it's original form can be useful for debugging purposes (i.e. when fields are missing or odd values are returned in the OAD representation of the object).
 
    The value of the ``Content-Type`` response header depends on the type of data that is returned by the data provider.
 
@@ -471,51 +379,68 @@ Retrieving a single object
 
    .. sourcecode:: http
 
-      $ curl -i 'http://api.opencultuurdata.nl/v0/openbeelden/4558763df1b233a57f0176839dc572e9e8726a02/source'
+      $ curl -i 'http://api-en.archaeologydata.com/v0/pnh/701287f9d6d4bf1727e3569b5aebb8d65ce13163/source'
 
    **Example response**
 
    .. sourcecode:: http
 
-      HTTP/1.0 200 OK
-      Content-Type: application/xml; charset=utf-8
-      Content-Length: 3914
-      Date: Mon, 19 May 2014 20:28:57 GMT
-
-      <?xml version="1.0" encoding="UTF-8"?>
-      <OAI-PMH xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.openarchives.org/OAI/2.0/" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
-        ... snip ...
-      </OAI-PMH>
-
-   :statuscode 200: OK, no errors.
-   :statuscode 404: The requested source and/or object does not exist.
-
-
-.. http:get:: /(source_id)/(object_id)/stats
-
-   Retrieves statistics about the usage of the object within the Open Cultuur Data API. Currently these statistics are very basic, however, we do collect a lot more detailed information. I you wish to see additional stats here, please let us know. There's also a :ref:`more detailed description available <dev_tech_logging>` on how usage of the API is being logged.
-
-   **Example request**
-
-   .. sourcecode:: http
-
-      $ curl -i 'http://api.opencultuurdata.nl/v0/openbeelden/4558763df1b233a57f0176839dc572e9e8726a02/stats'
-
-   **Example response**
-
-   .. sourcecode:: http
-
-      HTTP/1.0 200 OK
-      Content-Type: application/json; charset=utf-8
-      Content-Length: 116
-      Date: Mon, 19 Jan 2015 09:14:19 GMT
-
-      {
-        "n_appeared_in_search_results": 4, 
-        "n_appeared_in_similar_results": 0, 
-        "n_get": 12, 
-        "n_get_source": 0
-      }
+      <record xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <header>
+          <identifier>5002-081                                  </identifier>
+          <datestamp>2016-02-11T13:52:21Z</datestamp>
+        </header>
+        <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:wgs84_pos="http://www.w3.org/2003/01/geo/wgs84_pos#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/" xmlns:oai="http://www.openarchives.org/OAI/2.0/" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ore="http://www.openarchives.org/ore/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:dcterms="http://purl.org/dc/terms/">
+          <dc:identifier>5002-081                                  </dc:identifier>
+          <relatedid>Object38791</relatedid>
+          <recordtype>Object</recordtype>
+          <title>Dolk</title>
+          <dc:title>Dolk (onderdeel)</dc:title>
+          <dc:subject>Dolk (onderdeel)</dc:subject>
+          <dc:description language="DUT">Dolk; fe-dol-; Quillon dagger; driekantig, versmalde angel en houten opschuifheft.</dc:description>
+          <dc_type>NH Collectie</dc_type>
+          <europeana_type>DIVERS</europeana_type>
+          <dc_source>The Museum System</dc_source>
+          <dcterms:temporal>1400-1500</dcterms:temporal>
+          <dcterms:spatial>Middeleeuwen laat: 1050 - 1500 nC</dcterms:spatial>
+          <dcterms:spatial>Middeleeuwen: 450 - 1500 nC</dcterms:spatial>
+          <dcterms:spatial>Middeleeuwen laat B: 1250 - 1500 nC</dcterms:spatial>
+          <dcterms:temporal>1400-1500</dcterms:temporal>
+          <dc_creator ConstituentID="3279" DisplayOrder="2" Role="Uitvoerder onderzoek" creatorandrole="PWN Waterleidingbedrijf Noord-Holland (Uitvoerder onderzoek)">PWN Waterleidingbedrijf Noord-Holland</dc_creator>
+          <dc_creator ConstituentID="3176" DisplayOrder="1" Role="Uitvoerder onderzoek" creatorandrole="Rijksmuseum van Oudheden (Uitvoerder onderzoek)">Rijksmuseum van Oudheden</dc_creator>
+          <dc_rights>Naamsvermelding-NietCommercieel-GeenAfgeleideWerken 3.0 Nederland (CC BY-NC-ND 3.0)
+http  ://creativecommons.org/licenses/by-nc-nd/3.0/nl/</dc_rights>
+          <dc_format>3.1/30.5/-</dc_format>
+          <dc_language>DUT</dc_language>
+          <europeana_language>DUT</europeana_language>
+          <dcterms_medium>IJzer; koperlegering; hout</dcterms_medium>
+          <europeana_country>The Netherlands</europeana_country>
+          <europeana_provider>Provincie Noord-Holland</europeana_provider>
+          <europeana_isshownby>http://collectie.huisvanhilde.nl/cc/imageproxy.aspx?server=10.0.10.211&amp;port=17502&amp;filename=images59/Bergen/Egmond/Egmond aan den Hoef/Kasteel/doosnummers-objecten-ladenkast metaal/5002-081.jpg&amp;cache=yes</europeana_isshownby>
+          <europeana_uri>http://collectie.huisvanhilde.nl</europeana_uri>
+          <objectid>38791</objectid>
+          <periodezoeken>Middeleeuwen laat: 1050 - 1500 nC</periodezoeken>
+          <periodezoeken>Middeleeuwen: 450 - 1500 nC</periodezoeken>
+          <periodezoeken>Middeleeuwen laat B: 1250 - 1500 nC</periodezoeken>
+          <thesperiode>Middeleeuwen laat: 1050 - 1500 nC</thesperiode>
+          <thesperiode>Middeleeuwen: 450 - 1500 nC</thesperiode>
+          <thesperiode>Middeleeuwen laat B: 1250 - 1500 nC</thesperiode>
+          <thesvondst>Dolk (onderdeel)</thesvondst>
+          <thesvondst>IJzer</thesvondst>
+          <thesvondst>Metaalsoorten</thesvondst>
+          <objecttype>object</objecttype>
+          <vindplaats regio="Kennemerland" gemeente="Bergen" plaats="Egmond aan den Hoef" jaar="1932-1935" vindplaatstotaal="Slot op den Hoef, Egmond aan den Hoef, Bergen" googleurl="http://www.google.com/maps/place/Nederland, Egmond aan den Hoef" googleplace="Nederland, Egmond aan den Hoef">Slot op den Hoef</vindplaats>
+          <rubriek>Composiet</rubriek>
+          <relobjectsites sitename="Slot op den Hoef" deeplinksitepubl="http://collectie.huisvanhilde.nl/?query=Records/relatedid=[Site203]&amp;label=Zoekopdracht&amp;showtype=record">Site203</relobjectsites>
+          <relobjectconst dc_creator="PWN Waterleidingbedrijf Noord-Holland">Constituent3279</relobjectconst>
+          <relobjectconst dc_creator="Rijksmuseum van Oudheden">Constituent3176</relobjectconst>
+          <Standplaats>Depot C</Standplaats>
+          <publiek>1</publiek>
+          <deeplinkpubl>http://collectie.huisvanhilde.nl/?query=Records/relatedid=[Object38791]&amp;label=Zoekopdracht&amp;showtype=record</deeplinkpubl>
+          <relatedid>Object38791</relatedid>
+          <vindplaats xco="105.400" yco="515.150">Slot op den Hoef</vindplaats>
+        </metadata>
+      </record>
 
    :statuscode 200: OK, no errors.
    :statuscode 404: The requested source and/or object does not exist.
@@ -527,7 +452,7 @@ Similar items
 
 .. http:post:: /similar/(object_id)
 
-  Retrieve objects similar to the object with id ``object_id`` across all indexed datasets (i.e. it could return similarly described paintings from different collection). From the contents of the object, the most descriptive terms ("descriptive" here means the terms with the highest tf-idf value in the document) are used to search across collections.
+  Retrieve objects similar to the object with id ``object_id`` across all indexed datasets (i.e. it could return similarly described pieces of glass from different collection). From the contents of the object, the most descriptive terms ("descriptive" here means the terms with the highest tf-idf value in the document) are used to search across collections.
 
   As a search is executed, the response format is exactly the same as the response returned by the :ref:`search endpoint <rest_search>`. The request format is almost the same, with the exception that a query can't be specified (as the document with id ``object_id`` is considered the query). That means that faceting, filtering and sorting on the resulting set are fully supported.
 
@@ -535,7 +460,7 @@ Similar items
 
   .. sourcecode:: http
 
-    $ curl -i -XPOST 'http://api.opencultuurdata.nl/v0/similar/<object_id>' -d '{
+    $ curl -i -XPOST 'http://api-en.archaeologydata.com/v0/similar/<object_id>' -d '{
        "facets": {
           "collection": {},
           "date": {"interval": "day"}
@@ -573,7 +498,7 @@ Similar items
 
 Resolver
 --------
-The OpenCultuurData API provides all (media) urls as :ref:`OpenCultuurData Resolver URLs <rest_resolver>`. This will route all requests for content through the API, which will process and validate the URL, and provide a redirect to the original content source. This will allow for caching or rate limiting on API level in the future, to precent excessive amounts of requests to the sources.
+The Open Archaeology Data API provides all (media) urls as Open Archaeology Data Resolver URLs. This will route all requests for content through the API, which will process and validate the URL, and provide a redirect to the original content source. This will allow for caching or rate limiting on API level in the future, to precent excessive amounts of requests to the sources.
 
 .. http:get:: /resolve/(url_hash)
 
@@ -596,19 +521,19 @@ The OpenCultuurData API provides all (media) urls as :ref:`OpenCultuurData Resol
 
     .. sourcecode:: http
 
-      $ curl -i -Haccept:application/json -XGET http://api.opencultuurdata.nl/v0/resolve/<url_hash>
+      $ curl -i -Haccept:application/json -XGET http://api-en.archaeologydata.com/v0/resolve/<url_hash>
 
     **Example browser-like request**
 
     .. sourcecode:: http
 
-      $ curl -i -Haccept:text/html -XGET http://api.opencultuurdata.nl/v0/resolve/<url_hash>
+      $ curl -i -Haccept:text/html -XGET http://api-en.archaeologydata.com/v0/resolve/<url_hash>
 
     **Example thumbnail json request**
 
     .. sourcecode:: http
 
-      $ curl -i -Haccept:application/json -XGET http://api.opencultuurdata.nl/v0/resolve/<url_hash>?size=medium_sq
+      $ curl -i -Haccept:application/json -XGET http://api-en.archaeologydata.com/v0/resolve/<url_hash>?size=medium_sq
 
     **Example success response**
 
@@ -620,7 +545,7 @@ The OpenCultuurData API provides all (media) urls as :ref:`OpenCultuurData Resol
     .. sourcecode:: http
 
       HTTP/1.0 302 FOUND
-      Location: http://<STATIC_SUB_DOMAIN>.opencultuurdata.nl/media/<img_name>.jpg"
+      Location: http://<STATIC_SUB_DOMAIN>.archaeologydata.com/media/<img_name>.jpg"
 
     **Example failed json response**
 

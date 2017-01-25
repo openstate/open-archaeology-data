@@ -1,5 +1,5 @@
-Open Cultuur Data API Documentation
-===================================
+Open Archaeology Data API Documentation
+=======================================
 
 Background
 ----------
@@ -9,27 +9,21 @@ Background
 
    intro
    faq
-   changes
 
-
-Using the Open Cultuur Data API
--------------------------------
+Using the Open Archaeology Data API
+-----------------------------------
 
 .. toctree::
    :maxdepth: 2
 
-   user/quickstart
    user/api
    user/datasets
 
-Contributing to the Open Cultuur Data API
+Contributing to the Open Archaeology Data API
 -----------------------------------------
 .. toctree::
    :maxdepth: 2
 
    dev/getting_started
    dev/tech_overview
-   dev/first_dataset
-   dev/backup_and_restore
    dev/api
-
