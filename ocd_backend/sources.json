@@ -5,6 +5,12 @@
         "transformer": "ocd_backend.transformers.BaseTransformer",
         "item": "ocd_backend.items.pnh.PnhItem",
         "enrichers": [
+            [
+                "ocd_backend.enrichers.media_enricher.MediaEnricher",
+                {
+                    "tasks": ["media_type", "image_metadata"]
+                }
+            ]
         ],
         "loader": "ocd_backend.loaders.ElasticsearchLoader",
         "cleanup": "ocd_backend.tasks.CleanupElasticsearch",
@@ -25,6 +31,12 @@
         "transformer": "ocd_backend.transformers.BaseTransformer",
         "item": "ocd_backend.items.pzh.PzhItem",
         "enrichers": [
+            [
+                "ocd_backend.enrichers.media_enricher.MediaEnricher",
+                {
+                    "tasks": ["media_type", "image_metadata"]
+                }
+            ]
         ],
         "loader": "ocd_backend.loaders.ElasticsearchLoader",
         "cleanup": "ocd_backend.tasks.CleanupElasticsearch",
@@ -38,25 +50,5 @@
             "use_cache": true,
             "use_override": true
         }
-    },
-    {
-        "id": "openbeelden",
-        "extractor": "ocd_backend.extractors.oai.OaiExtractor",
-        "transformer": "ocd_backend.transformers.BaseTransformer",
-        "item": "ocd_backend.items.openbeelden.OpenbeeldenItem",
-        "enrichers": [
-            [
-                "ocd_backend.enrichers.media_enricher.MediaEnricher",
-                {
-                    "tasks": ["media_type", "image_metadata"],
-                    "partial_media_fetch": true
-                }
-            ]
-        ],
-        "loader": "ocd_backend.loaders.ElasticsearchLoader",
-        "cleanup": "ocd_backend.tasks.CleanupElasticsearch",
-        "oai_base_url": "http://www.openbeelden.nl/feeds/oai/",
-        "oai_metadata_prefix": "oai_oi",
-        "index_name": "openbeelden"
     }
 ]
