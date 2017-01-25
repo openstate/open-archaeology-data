@@ -2,7 +2,7 @@
 
 source /opt/bin/activate
 
-cd /opt/ocd
+cd /opt/oad
 
 service elasticsearch restart
 
