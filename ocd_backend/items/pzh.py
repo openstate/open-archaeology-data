@@ -1,7 +1,6 @@
 from datetime import datetime
 from ocd_backend.items import BaseItem
 from tinydb import TinyDB, Query
-import io
 import requests
 
 class PzhItem(BaseItem):
@@ -55,7 +54,6 @@ class PzhItem(BaseItem):
             'q': text
         }
         target_text = unicode(self.session.get(self.translate_url, params=params).json()['data']['translations'][0]['translatedText'])
-        #target_text = 'DIT IS EEN TEST'
         if 'use_cache' in self.source_definition['translate'] and self.source_definition['translate']['use_cache'] == True:
             self.cache_db.insert({
                 'source': self.source_definition['translate']['source'],
@@ -107,7 +105,7 @@ class PzhItem(BaseItem):
                     continue
                 return_data.append({
                     'original_url': url,
-                    'content_type': 
+                    'content_type':
                         self.media_mime_types[
                             self._get_clean_link(
                                 medium.text
@@ -142,7 +140,7 @@ class PzhItem(BaseItem):
         # No authors for archaeology
         combined_index_data['authors'] = []
 
-        # Media 
+        # Media
         mediums1 = self.original_item.findall('.//oai:metadata/oai:Image',
             namespaces=self.namespaces)
         mediums2 = self.original_item.findall('.//oai:metadata/oai:OtherImages',
