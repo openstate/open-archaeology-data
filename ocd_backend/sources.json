@@ -50,5 +50,30 @@
             "use_cache": true,
             "use_override": true
         }
+    },
+    {
+        "id": "benaki",
+        "extractor": "ocd_backend.extractors.europeana.EuropeanaExtractor",
+        "transformer": "ocd_backend.transformers.BaseTransformer",
+        "item": "ocd_backend.items.benaki.BenakiItem",
+        "enrichers": [
+            [
+                "ocd_backend.enrichers.media_enricher.MediaEnricher",
+                {
+                    "tasks": ["media_type", "image_metadata"]
+                }
+            ]
+        ],
+        "loader": "ocd_backend.loaders.ElasticsearchLoader",
+        "cleanup": "ocd_backend.tasks.CleanupElasticsearch",
+        "index_name": "benaki",
+        "api_key": "",
+        "translate": {
+            "key": "",
+            "source": "el",
+            "target": "en",
+            "use_cache": true,
+            "use_override": true
+        }
     }
 ]
