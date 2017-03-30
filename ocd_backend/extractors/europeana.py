@@ -37,7 +37,7 @@ class EuropeanaExtractor(BaseExtractor, HttpRequestMixin):
         log.info('Total collection items to fetch %s (%s pages)',
                  total_items, total_pages)
 
-        for p in xrange(0, 1):
+        for p in xrange(0, total_pages):
             log.info('Getting collection items page %s of %s', p, total_pages)
             resp = self.api_call(cursor)
             cursor = resp['nextCursor']
