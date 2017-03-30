@@ -1,5 +1,9 @@
 import os.path
 
+# NOTE: don't forget to change the following line in manage.py if you
+# forked this repo and renamed '/opt/oad':
+# sys.path.insert(0, '/opt/oad')
+
 DEBUG = True
 
 # Celery settings
